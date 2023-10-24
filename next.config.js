@@ -1,13 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: { appDir: true },
-   images: {
+  images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'daisyui.com',
-        port: '',
-     
+        protocol: "https",
+        hostname: "daisyui.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        port: "",
       },
     ],
   },
