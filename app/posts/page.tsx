@@ -16,7 +16,7 @@ export interface Post {
 }
 export default async function Posts({ searchParams }: any) {
   const { type } = searchParams;
-  const data = await fetch(`http://localhost:3000/api/post?type=${type}`, {
+  const data = await fetch(`/api/post?type=${type}`, {
     cache: "no-cache",
   });
   const posts: Post[] = await data.json();

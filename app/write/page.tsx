@@ -34,12 +34,12 @@ const Write: FC<WriteProps> = () => {
   const [description, setDescription] = useState<string>("");
   const { back } = useRouter();
   const handlePublish = useCallback(async () => {
-    await fetch("http://localhost:3000/api/post", {
+    await fetch("/api/post", {
       method: "post",
       body: JSON.stringify({ title, description }),
     });
     back();
-  }, [title, description]);
+  }, [title, description,back]);
 
   return (
     <div className="  p-4">

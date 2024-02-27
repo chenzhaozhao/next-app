@@ -2,7 +2,7 @@
  * @Author: 陈朝朝60258 zhaozhao.chen@going-link.com
  * @Date: 2023-10-24 23:24:59
  * @LastEditors: 陈朝朝60258 zhaozhao.chen@going-link.com
- * @LastEditTime: 2024-02-27 20:45:55
+ * @LastEditTime: 2024-02-27 23:48:34
  * @FilePath: /next-app/app/compoents/ProductList.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,7 +16,7 @@ export interface Product {
   description: string;
 }
 const ProductList = async () => {
-  const json = await fetch("http://localhost:3000/api/product", {
+  const json = await fetch("/api/product", {
     method: "get",
     cache: "no-store",
   });

@@ -2,7 +2,7 @@
  * @Author: 陈朝朝60258 zhaozhao.chen@going-link.com
  * @Date: 2023-10-23 23:41:02
  * @LastEditors: 陈朝朝60258 zhaozhao.chen@going-link.com
- * @LastEditTime: 2024-02-27 16:39:47
+ * @LastEditTime: 2024-02-27 23:49:33
  * @FilePath: /next-app/app/product/[id]/page.tsx
  * @Description:课程详情页
  */
@@ -12,7 +12,7 @@ import Image from "next/image";
 import PurchaseButton from "@/app/compoents/PurchaseButton";
 const ProductDetail = async ({ params }: PageProps) => {
   const { id } = params;
-  const data = await fetch(`http://localhost:3000/api/product/${id}`, {
+  const data = await fetch(`/api/product/${id}`, {
     method: "get",
     cache: "no-cache",
   });

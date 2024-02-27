@@ -1,3 +1,11 @@
+/*
+ * @Author: 陈朝朝60258 zhaozhao.chen@going-link.com
+ * @Date: 2023-10-25 00:01:44
+ * @LastEditors: 陈朝朝60258 zhaozhao.chen@going-link.com
+ * @LastEditTime: 2024-02-27 23:49:40
+ * @FilePath: /next-app/app/productadd/page.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 "use client";
 
 import { useCallback, useState } from "react";
@@ -5,7 +13,7 @@ import type { Product } from "../compoents/ProductList";
 const AddProduct = () => {
   const [product, setProduct] = useState({});
   const handleClick = useCallback(() => {
-    fetch("http://localhost:3000/api/product", {
+    fetch("/api/product", {
       method: "post",
       body:JSON.stringify(product),
     });
