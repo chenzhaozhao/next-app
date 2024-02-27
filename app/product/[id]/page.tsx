@@ -2,7 +2,7 @@
  * @Author: 陈朝朝60258 zhaozhao.chen@going-link.com
  * @Date: 2023-10-23 23:41:02
  * @LastEditors: 陈朝朝60258 zhaozhao.chen@going-link.com
- * @LastEditTime: 2024-02-27 23:49:33
+ * @LastEditTime: 2024-02-27 23:56:19
  * @FilePath: /next-app/app/product/[id]/page.tsx
  * @Description:课程详情页
  */
@@ -25,7 +25,6 @@ const ProductDetail = async ({ params }: PageProps) => {
     description: string;
     users:string
   } = await data.json();
-   console.log(product,'xxxx')
   return (
     <div className=" sm:flex p-4  flex-wrap">
       <div className="flex-1   bg-white p-8 rounded-md">

@@ -2,7 +2,7 @@
  * @Author: 陈朝朝60258 zhaozhao.chen@going-link.com
  * @Date: 2024-02-23 17:42:43
  * @LastEditors: 陈朝朝60258 zhaozhao.chen@going-link.com
- * @LastEditTime: 2024-02-27 22:37:55
+ * @LastEditTime: 2024-02-27 23:54:27
  * @FilePath: /next-app/app/api/pay/route.ts
  * @Description:付款
  */
@@ -55,7 +55,7 @@ export const GET = async (request: NextRequest, params: any) => {
   const outTradeNum = searchParams.get("outTradeNum");
   const tradeNum = searchParams.get("tradeNum");
   const response = await fetch(
-    `https://www.ezfp.cn/api.php?act=order&pid=${pid}&key=${key}&out_trade_no=${outTradeNum}&trade_no=${tradeNum}`,{
+    `https://www.ezfp.cn/api.php?act=order&pid=${pid}&key=${process.env.PID_KEY}&out_trade_no=${outTradeNum}&trade_no=${tradeNum}`,{
         method:"get"
     }
   );
