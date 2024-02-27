@@ -1,39 +1,93 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = "mysql://root:Czz4913$@127.0.0.1:3306/next-app"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id           BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
-  email        String
-  password     String
-  avatar       String?
-  github       String?
-  created_time DateTime @default(now())
-  updated_time DateTime @updatedAt
+  id             String    @id @default(cuid())
+  name           String?
+  phone          String
+  hashedPassword String?
+  image          String?
+  password       String
+  type           String
+  accounts       Account[]
+  sessions       Session[]
+  Post           Post[]
+  Comment        Comment[]
+  Product        Product[]
 }
 
-model Category {
-  id       BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
-  title    String
-  articles Article[]
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
-model Article {
-  id           BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
-  title        String
-  content      String   @db.Text
-  thumb        String
-  author       String
-  created_time DateTime @default(now())
-  updated_time DateTime @updatedAt()
-  Category     Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId   BigInt   @db.UnsignedBigInt
+model Product {
+  id          String  @id @default(cuid())
+  name        String
+  price       Float
+  download    Int?
+  description String? @db.LongText
+  bgUrl       String?
+  url         String?
+  users       String? @db.LongText
+  userId      String?
+  User        User?   @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  title       String    @unique
+  create_time DateTime  @updatedAt
+  update_time DateTime  @updatedAt
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  description String    @db.LongText
+  userId      String
+  favorite    Int?
+  Comment     Comment[]
+}
+
+model Comment {
+  id     String @id @default(cuid())
+  text   String @db.LongText
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
 }

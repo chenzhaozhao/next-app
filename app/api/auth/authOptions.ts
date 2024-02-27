@@ -1,61 +1,74 @@
-// import { prisma } from "@prisma/client";
-import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { AuthOptions } from 'next-auth';
-import GoogleProvider from "next-auth/providers/google";
+/*
+ * @Author: 陈朝朝60258 zhaozhao.chen@going-link.com
+ * @Date: 2023-10-23 09:15:50
+ * @LastEditors: 陈朝朝60258 zhaozhao.chen@going-link.com
+ * @LastEditTime: 2024-02-27 01:05:42
+ * @FilePath: /next-app/app/api/auth/authOptions.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+import { PrismaClient } from "@prisma/client";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import bcrypt from 'bcrypt';
-import GithubProvider from 'next-auth/providers/github'
+export const prisma = new PrismaClient();
+export const authOptions: NextAuthOptions = {
+  secret: process.env.SECRET,
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    Credentials({
+      credentials: {
+        name: {},
+        password: {},
+        phone: {},
+      },
+      authorize: async (credentials) => {
+        let user;
+        try {
+          if (credentials) {
+            const { name, phone, password } = credentials;
+            user = await prisma.user.findFirst({ where: { phone } });
+            //用户不存在，直接创建
+            if (!user) {
+              user = await prisma.user.create({ data: { name, phone, password, type: '0' } })
+            }
+            //存在需要比较密码
+            if (password !== user.password) {
+              return Promise.reject({ message: '密码不正确' })
+            }
+            return Promise.resolve(user);
+          } else {
+            return Promise.resolve(null);
+          }
+        } catch (e) {
+          return null
+        }
 
-export const authOptions: AuthOptions = {
-    secret:process.env.SECRET,
-    // adapter:PrismaAdapter(prisma),
-    // theme: {
-    //     logo: "https://next-auth.js.org/img/logo/logo-sm.png",
-    //   },    
-    providers: [
-        // Credentials({
-        //     name: 'Credentials',
-        //     credentials: {
-        //       email: { label: "Email", type: "text" },
-        //       password: { label: "Password", type: "password" }
-        //     },
-        //     async authorize (credentials, req) {
-        //         console.log(credentials, req)
-        //         return {...credentials,...req}
-        //     //   if (typeof credentials !== "undefined") {
-        //     //     const res = await authenticate(credentials.email, credentials.password)
-        //     //     if (typeof res !== "undefined") {
-        //     //       return { ...res.user, apiToken: res.token }
-        //     //     } else {
-        //     //       return null
-        //     //     }
-        //     //   } else {
-        //     //     return null
-        //     //   }
-        //     }
-        //   })
-        // ,
-        // GoogleProvider({
-        //     clientId:process.env.GOOGLE_CLIENT_ID!,
-        //     clientSecret:process.env.GOOGLE_CLIENT_SECRET!
-        // }),
-        GithubProvider({
-            clientId:process.env.GITHUB_ID!,
-            clientSecret:process.env.GITHUB_SECRET!
-        })
-    ],
-    // session: {
-    //     strategy: 'jwt'
-    // },
-    // callbacks: {
-    //     async jwt({ token,user}) {
-    //       token.user = user
-    //       return token
-    //     },
-    //     session: async ({ session, token }:{session:any,token:any}) => {
-    //         session.user = token.user;
-    //         return {expires:'1234567',user:{name:'qwerty',email:'asdrtj'}};
-    //       },
-    //   },
-    //   
-}
+      },
+    }),
+  ],
+
+  pages: {
+    signIn: "/login",
+    error: "/404",
+  },
+  session: {
+    strategy: "jwt",
+  },
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      return { ...token, ...user };
+    },
+
+    session: async ({ session, token }) => {
+      const userId: string = token.id as string;
+      session.user=token;
+      if (userId) {
+        const user = await prisma.user.findUnique({ where: { id: userId } })
+        if (user) {
+          session.user = user
+        }
+      }
+      return Promise.resolve(session);
+    },
+  },
+};
