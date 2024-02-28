@@ -2,7 +2,7 @@
  * @Author: 陈朝朝60258 zhaozhao.chen@going-link.com
  * @Date: 2024-01-24 16:42:20
  * @LastEditors: 陈朝朝60258 zhaozhao.chen@going-link.com
- * @LastEditTime: 2024-02-27 22:17:24
+ * @LastEditTime: 2024-02-28 09:40:12
  * @FilePath: /next-app/app/compoents/PurchaseButton.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -29,7 +29,7 @@ const PurchaseButton = (props: {
     if(isBuy){
       return
     }
-    const response = await fetch("/api/pay", {
+    const response = await fetch(`${process.env.API_HOST}api/pay`, {
       method: "post",
       body: JSON.stringify({
         price: String((Number(price) / 100).toFixed(2)),
@@ -52,7 +52,7 @@ const PurchaseButton = (props: {
     if (tradeNum && outTradeNum) {
       const timer = setInterval(async () => {
         const response = await fetch(
-          `/api/pay?outTradeNum=${outTradeNum}&tradeNum=${tradeNum}`,
+          `${process.env.API_HOST}api/pay?outTradeNum=${outTradeNum}&tradeNum=${tradeNum}`,
           { method: "get" }
         );
 
@@ -65,7 +65,7 @@ const PurchaseButton = (props: {
             const aliPayModal: any = document?.getElementById("aliPayModal");
             if (aliPayModal && aliPayModal.close) {
               aliPayModal.close();
-              await fetch(`/api/product/${id}`, {
+              await fetch(`${process.env.API_HOST}/api/product/${id}`, {
                 method: "put",
               });
               enqueueSnackbar("购买成功");

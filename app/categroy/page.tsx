@@ -2,17 +2,16 @@
  * @Author: 陈朝朝60258 zhaozhao.chen@going-link.com
  * @Date: 2023-10-27 16:37:48
  * @LastEditors: 陈朝朝60258 zhaozhao.chen@going-link.com
- * @LastEditTime: 2024-02-27 19:16:50
+ * @LastEditTime: 2024-02-28 09:45:11
  * @FilePath: /next-app/app/categroy/page.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import React, { FunctionComponent } from "react";
+import React from "react";
 import ProductList from "../compoents/ProductList";
-interface Props {}
 
-const CateGroy: FunctionComponent<Props> = async () => {
+const CateGroy = () => {
   return (
-    <>
+    <div>
       <form className="w-full px-4 mt-3">
         <label
           htmlFor="default-search"
@@ -55,7 +54,7 @@ const CateGroy: FunctionComponent<Props> = async () => {
       <div className=" mt-2">
         <ProductList />
       </div>
-    </>
+    </div>
   );
 };
 

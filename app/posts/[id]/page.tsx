@@ -2,7 +2,7 @@
  * @Author: 陈朝朝60258 zhaozhao.chen@going-link.com
  * @Date: 2023-10-20 17:12:40
  * @LastEditors: 陈朝朝60258 zhaozhao.chen@going-link.com
- * @LastEditTime: 2024-02-27 23:49:24
+ * @LastEditTime: 2024-02-28 09:40:34
  * @FilePath: /next-app/app/posts/[id]/page.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -12,7 +12,7 @@ import CommentSend from "@/app/compoents/Comment";
 import type { Post } from "../page";
 export default async function Posts({ params }: PageProps) {
   const { id } = params;
-  const data = await fetch(`/api/post/${id}`, {
+  const data = await fetch(`${process.env.API_HOST}api/post/${id}`, {
     method: "get",
     cache: "no-cache",
   });

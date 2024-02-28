@@ -6,7 +6,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:Czz4913$@127.0.0.1:3306/next-app"
+  url      = "mysql://chenzhaozhao:TutKnZMJKvZeA6p@mysql.sqlpub.com:3306/nextapp001"
 }
 
 model Account {
